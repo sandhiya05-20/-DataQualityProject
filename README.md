@@ -70,8 +70,8 @@ python app.py
 * Admin Page → http://127.0.0.1:5000/admin-login
 
 ## Admin Login
-* Username: `admin`
-* Password: `admin123`
+* Contact the system administrator for login credentials.
+
 
 ## Requirements
 * Python 3.10 / 3.11 recommended
