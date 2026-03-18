@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality System</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="user-body">
+
+    <div class="user-page">
+
+        <div class="user-hero">
+            <div class="shield-icon">🛡️</div>
+            <h1>Data Quality System</h1>
+            <p>Submit your data securely. Our system automatically validates and ensures your data is accurate and complete.</p>
+        </div>
+
+        <div class="user-card">
+            <h2>Submit Your Record</h2>
+            <p class="subtitle">Fill in the details below and we'll take care of the rest.</p>
+
+            <div class="user-form">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" placeholder="e.g. John Doe" />
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="e.g. john@email.com" />
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="phone" placeholder="e.g. 9876543210" />
+                </div>
+                <button class="submit-btn" onclick="addRecord()">
+                    Submit Record →
+                </button>
+            </div>
+
+            <div id="success-msg" class="success-box" style="display:none;">
+                ✅ Your record has been submitted successfully!
+            </div>
+            <div id="error-msg" class="error-box" style="display:none;">
+                ❌ Please fill in all fields correctly.
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <span>🔍</span>
+                <h3>Auto Validation</h3>
+                <p>Every record is automatically checked for errors</p>
+            </div>
+            <div class="feature">
+                <span>🔒</span>
+                <h3>Secure Storage</h3>
+                <p>Your data is stored safely in our database</p>
+            </div>
+            <div class="feature">
+                <span>⚡</span>
+                <h3>Instant Processing</h3>
+                <p>Records are processed in real-time</p>
+            </div>
+        </div>
+
+        <a href="/admin-login" class="admin-link">Admin Panel →</a>
+
+    </div>
+
+    <script>
+        async function addRecord() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            if (!name || !email || !phone) {
+                document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('success-msg').style.display = 'none';
+                return;
+            }
+
+            const res = await fetch('/api/records', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, phone })
+            });
+            const data = await res.json();
+            document.getElementById('success-msg').style.display = 'block';
+            document.getElementById('error-msg').style.display = 'none';
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+        }
+    </script>
+</body>
+</html>

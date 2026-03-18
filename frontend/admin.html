@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>⚙️ Admin Dashboard</h1>
+        <p>Autonomous Data Quality Management System</p>
+        <a href="/" class="admin-btn">← Back to User Page</a>
+    </header>
+
+    <div class="container">
+
+        <div class="card health-card">
+            <h2>📊 Database Health Metrics</h2>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-value" id="total">-</span>
+                    <span class="metric-label">Total Records</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value green" id="valid">-</span>
+                    <span class="metric-label">Valid Records</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value red" id="quarantined">-</span>
+                    <span class="metric-label">Quarantined</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value blue" id="health">-</span>
+                    <span class="metric-label">Health Score %</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📁 All Data Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody id="records-body"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>⚠️ Quarantine Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Record ID</th><th>Raw Name</th><th>Raw Email</th><th>Issue Type</th><th>Quarantined At</th>
+                    </tr>
+                </thead>
+                <tbody id="quarantine-body"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>📋 Cleanup Log</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Log ID</th><th>Name</th><th>Rule</th><th>Action</th><th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="logs-body"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+    async function loadHealth() {
+        const res = await fetch('/api/health');
+        const data = await res.json();
+        document.getElementById('total').textContent = data.total_records;
+        document.getElementById('valid').textContent = data.valid_records;
+        document.getElementById('quarantined').textContent = data.quarantined_records;
+        document.getElementById('health').textContent = data.health_score + '%';
+    }
+
+    async function loadRecords() {
+        const res = await fetch('/api/records');
+        const data = await res.json();
+        const tbody = document.getElementById('records-body');
+        tbody.innerHTML = '';
+        data.forEach(r => {
+            tbody.innerHTML += `<tr>
+                <td>${r.record_id}</td>
+                <td>${r.name}</td>
+                <td>${r.email}</td>
+                <td>${r.phone}</td>
+                <td class="${r.status === 'VALID' ? 'green' : 'red'}">${r.status}</td>
+                <td>${r.created_at}</td>
+            </tr>`;
+        });
+    }
+
+    async function loadQuarantine() {
+        const res = await fetch('/api/quarantine');
+        const data = await res.json();
+        const tbody = document.getElementById('quarantine-body');
+        tbody.innerHTML = '';
+        data.forEach(r => {
+            tbody.innerHTML += `<tr>
+                <td>${r.quarantine_id}</td>
+                <td>${r.record_id}</td>
+                <td>${r.raw_name}</td>
+                <td>${r.raw_email}</td>
+                <td class="red">${r.issue_type}</td>
+                <td>${r.quarantined_at}</td>
+            </tr>`;
+        });
+    }
+
+    async function loadLogs() {
+        const res = await fetch('/api/logs');
+        const data = await res.json();
+        const tbody = document.getElementById('logs-body');
+        tbody.innerHTML = '';
+        data.forEach(r => {
+            tbody.innerHTML += `<tr>
+                <td>${r.log_id}</td>
+                <td>${r.name}</td>
+                <td>${r.rule_name}</td>
+                <td class="${r.action_taken === 'VALIDATED' ? 'green' : 'red'}">${r.action_taken}</td>
+                <td>${r.timestamp}</td>
+            </tr>`;
+        });
+    }
+
+    window.onload = function() {
+        loadHealth();
+        loadRecords();
+        loadQuarantine();
+        loadLogs();
+    }
+    </script>
+</body>
+</html>

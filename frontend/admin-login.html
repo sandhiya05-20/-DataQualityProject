@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>🛡️ Admin Login</h1>
+        <p>Autonomous Data Quality Management System</p>
+    </header>
+
+    <div class="container">
+        <div class="card" style="max-width: 400px; margin: 0 auto;">
+            <h2>🔐 Admin Access</h2>
+            <div class="form" style="flex-direction: column;">
+                <input type="text" id="username" placeholder="Username" />
+                <input type="password" id="password" placeholder="Password" />
+                <button onclick="login()">Login</button>
+            </div>
+            <p id="login-msg" style="color:red; margin-top:10px;"></p>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === 'admin' && password === 'admin123') {
+                window.location.href = '/admin';
+            } else {
+                document.getElementById('login-msg').textContent = 'Invalid credentials!';
+            }
+        }
+    </script>
+</body>
+</html>
