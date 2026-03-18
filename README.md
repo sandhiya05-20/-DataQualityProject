@@ -37,8 +37,7 @@ python app.py
 
 ## 🔐 Admin Access
 - URL: http://127.0.0.1:5000/admin-login
-- Username: admin
-- Password: admin123
+
 
 ## ✨ Features
 - ✅ Auto-validation of email and phone number
