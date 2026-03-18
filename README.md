@@ -1,47 +1,94 @@
 # 🛡️ Autonomous Data Quality Management System
 
-A mini project for **21CSC205P Database Management Systems**  
-**SRM Institute of Science and Technology**
+A Python + Flask based web application that automatically validates incoming data, quarantines invalid records, and maintains a detailed audit log — all within the database layer.
 
-## 👥 Team Members
-- Archana V [RA2411030010324]
-- Sandhiya S [RA2411030010339]
+## Features
+* Real-time database health monitoring
+* Auto-validation of email format and phone number
+* Invalid records automatically moved to quarantine
+* Detailed audit trail with cleanup logs
+* Separate user and admin interfaces
+* Admin login protection
 
-## 📌 Project Overview
-An Autonomous Data Quality Management System that automatically validates incoming data, quarantines invalid records, and maintains a detailed audit log — all within the database layer.
+## Tech Stack
+* Python
+* Flask
+* MySQL
+* HTML / CSS / JavaScript
 
-## 🛠️ Tech Stack
-- **Database:** MySQL 8.0
-- **Backend:** Python (Flask)
-- **Frontend:** HTML, CSS, JavaScript
-
-## 📁 Project Structure
+## Project Structure
+```
 DataQualityProject/
+│
 ├── backend/
-│   └── app.py
+│   └── app.py              # Flask server & REST API
 ├── frontend/
-│   ├── index.html
-│   ├── admin.html
-│   ├── admin-login.html
-│   └── style.css
+│   ├── index.html          # User submission page
+│   ├── admin.html          # Admin dashboard
+│   ├── admin-login.html    # Admin login page
+│   └── style.css           # Styling
+└── README.md
+```
 
-## 🚀 How to Run
-1. Install dependencies:
+## Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/sandhiya05-20/-DataQualityProject.git
+cd -DataQualityProject
+```
+
+2. Install Python dependencies
+```bash
 pip install flask mysql-connector-python
-2. Set up MySQL database and run the DDL commands
-3. Update password in app.py
-4. Run the Flask server:
+```
+
+3. Set up MySQL database
+```bash
+mysql -u root -p
+```
+```sql
+CREATE DATABASE DataQualityDB;
+USE DataQualityDB;
+```
+Then run all DDL and DML commands from Chapter 2 of the report.
+
+4. Configure your MySQL password
+Open `backend/app.py` and update line 8:
+```python
+password="your_mysql_password_here",
+```
+
+## Run the Project
+```bash
 cd backend
 python app.py
-5. Open browser at http://127.0.0.1:5000
+```
 
-## 🔐 Admin Access
-- URL: http://127.0.0.1:5000/admin-login
+## Open in Browser
+* User Page → http://127.0.0.1:5000
+* Admin Page → http://127.0.0.1:5000/admin-login
 
+## Admin Login
+* Username: `admin`
+* Password: `admin123`
 
-## ✨ Features
-- ✅ Auto-validation of email and phone number
-- ✅ Quarantine system for invalid records
-- ✅ Real-time health metrics dashboard
-- ✅ Audit trail with cleanup logs
-- ✅ Separate user and admin interfaces
+## Requirements
+* Python 3.10 / 3.11 recommended
+* MySQL 8.0
+* Any modern browser
+
+## How It Works
+1. User submits a record on the user page
+2. Backend validates email format and phone number automatically
+3. Valid records are saved to the database with status VALID
+4. Invalid records are moved to quarantine automatically
+5. Every action is logged in the cleanup log
+6. Admin monitors all records and health metrics from the dashboard
+
+## Possible Improvements
+* Add duplicate email detection
+* Add more validation rules
+* Add email notification for quarantined records
+* Add data export feature
+* Add user authentication system
